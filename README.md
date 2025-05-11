@@ -45,18 +45,18 @@
 ### Локально
 ```bash
 # 1. Клонируйте репозиторий
- git clone https://github.com/Egor213312/Sprint3.git
- cd Sprint3
+ git clone https://github.com/dimakirio/calculatorv1.git
+ cd calculatorv1
 # 2. Установите зависимости
  go mod tidy
 # 3. Запустите сервер
- go run ./cmd/calc_service/main.go
+ go run ./cmd/main.go
 ```
 
 ### Через Docker
 ```bash
-git clone https://github.com/Egor213312/Sprint3.git
-cd Sprint3
+git clone https://github.com/dimakirio/calculatorv1.git
+cd calculatorv1
 docker-compose up --build
 ```
 
@@ -132,7 +132,7 @@ curl --location 'http://localhost:8080/api/v1/expressions/{id}' \
 
 Для запуска модульных тестов:
 ```bash
-cd Sprint3
+cd calculatorv1
 # Запуск всех тестов
  go test ./internal/orchestrator
 ```
