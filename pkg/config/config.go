@@ -1,27 +1,58 @@
-package calculation
+package config
 
 import (
-	"fmt"
+	"os"
+	"strconv"
 )
 
-func Calc(expression string) (float64, error) {
-	return 0, fmt.Errorf("not implemented")
+type Config struct {
+	ServerPort string
+	LogLevel   string
+	JWTSecret  string
+	DBPath     string
 }
 
-func Compute(operation string, a, b float64) (float64, error) {
-	switch operation {
-	case "+":
-		return a + b, nil
-	case "-":
-		return a - b, nil
-	case "*":
-		return a * b, nil
-	case "/":
-		if b == 0 {
-			return 0, ErrDivisionByZero
-		}
-		return a / b, nil
-	default:
-		return 0, fmt.Errorf("invalid operator: %s", operation)
+func LoadConfig() *Config {
+	port := os.Getenv("SERVER_PORT")
+	if port == "" {
+		port = "8080"
 	}
+
+	logLevel := os.Getenv("LOG_LEVEL")
+	if logLevel == "" {
+		logLevel = "info"
+	}
+
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		jwtSecret = "your-secret-key" // В продакшене нужно использовать безопасный ключ
+	}
+
+	dbPath := os.Getenv("DB_PATH")
+	if dbPath == "" {
+		dbPath = "calc.db"
+	}
+
+	return &Config{
+		ServerPort: port,
+		LogLevel:   logLevel,
+		JWTSecret:  jwtSecret,
+		DBPath:     dbPath,
+	}
+}
+
+func getEnv(key, defaultValue string) string {
+	if value, exists := os.LookupEnv(key); exists {
+		return value
+	}
+	return defaultValue
+}
+
+func getEnvAsInt(key string, defaultValue int) int {
+	if value, exists := os.LookupEnv(key); exists {
+		if intValue, err := strconv.Atoi(value); err == nil {
+			return intValue
+		}
+	}
+	return defaultValue
 }
